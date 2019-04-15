@@ -6,3 +6,4 @@ git
 
 inital commit = > commit local
 
+git remote add origin https://github.com/mohamedsaidmohamed/DatingApp.git
