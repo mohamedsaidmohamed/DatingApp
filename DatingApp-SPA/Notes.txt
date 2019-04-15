@@ -1,0 +1,8 @@
+install bootstarp
+=> npm install bootstrap@4 font -awesome
+
+git 
+=> git init
+
+inital commit = > commit local
+
