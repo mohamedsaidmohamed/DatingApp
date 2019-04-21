@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_Services/Auth.service';
-import { RSA_PKCS1_OAEP_PADDING } from 'constants';
 
 @Component({
   selector: 'app-Nav',
@@ -21,6 +20,7 @@ export class NavComponent implements OnInit {
     });
 
   }
+  
 loggedIn(){
   const token = localStorage.getItem('token');
   return !!token;
