@@ -15,6 +15,10 @@ Password -> hash -> hashed password  (using sha512)
 but password +salt (random generated) - >hash -> hashed password 
 =>it's not easy to decyrept because salt part is randomly generated every encyrption
 
+* ngx bootstrap *
+the best way to quickly integrate bootstarp 3 or 4 components with angular
+npm install ngx-bootstrap --save
+
 
 
 
