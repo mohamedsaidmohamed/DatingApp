@@ -25,3 +25,5 @@ npm install --save font-awesome angular-font-awesome
 *bootswatch = > add themes to bootstrap
 npm install bootswatch@4.1.1
 
+ *generate guard for auhorization of links
+ ng g guard auth  --spec=false
