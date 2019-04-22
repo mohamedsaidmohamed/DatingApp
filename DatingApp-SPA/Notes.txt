@@ -19,6 +19,9 @@ but password +salt (random generated) - >hash -> hashed password
 the best way to quickly integrate bootstarp 3 or 4 components with angular
 npm install ngx-bootstrap --save
 
+*for font awesome
+npm install --save font-awesome angular-font-awesome
 
-
+*bootswatch = > add themes to bootstrap
+npm install bootswatch@4.1.1
 
