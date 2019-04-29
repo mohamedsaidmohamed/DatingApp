@@ -1,0 +1,5 @@
+dotnet ef database update
+dotnet ef migrations remove  = > remove last migration before applying to database
+
+
+

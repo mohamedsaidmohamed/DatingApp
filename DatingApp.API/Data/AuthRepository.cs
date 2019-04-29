@@ -35,7 +35,12 @@ namespace DatingApp.API.Data
             user.PasswordSalt = PasswordSalt;
             
             await _dbcontext.Users.AddAsync(user);
-            await _dbcontext.SaveChangesAsync();
+            try{
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch(Exception ex){
+                
+            }
 
             return user;    
         }
