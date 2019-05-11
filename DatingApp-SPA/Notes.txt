@@ -27,3 +27,7 @@ npm install bootswatch@4.1.1
 
  *generate guard for auhorization of links
  ng g guard auth  --spec=false
+
+ * for photo gallery
+ https://www.npmjs.com/package/ngx-gallery
+ npm install ngx-gallery@5.3.2 --save
