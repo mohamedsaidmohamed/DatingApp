@@ -31,3 +31,8 @@ npm install bootswatch@4.1.1
  * for photo gallery
  https://www.npmjs.com/package/ngx-gallery
  npm install ngx-gallery@5.3.2 --save
+
+
+ * for file uploaders 
+ https://valor-software.com/ng2-file-upload/
+ 
