@@ -32,10 +32,7 @@ namespace DatingApp.API.Controllers
         {
             userForRegisterDto.username = userForRegisterDto.username.ToLower();
 
-            var UserToCreate = new User()
-            {
-                Username = userForRegisterDto.username
-            };
+            var UserToCreate =_Mapper.Map<User>(userForRegisterDto);
 
             if (await _AuthRepository.UserExist(userForRegisterDto.username))
             {
@@ -44,7 +41,9 @@ namespace DatingApp.API.Controllers
 
             var createdUser = await _AuthRepository.Register(UserToCreate, userForRegisterDto.password);
 
-            return StatusCode(201); //201 mean created
+            var userToReturn =_Mapper.Map<UserForDetailedDto>(createdUser);
+
+            return CreatedAtRoute("GetUser",new {Controller = "Users",id=createdUser.Id },userToReturn);
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)

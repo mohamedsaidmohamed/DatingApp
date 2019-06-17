@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
-import { BsDropdownModule ,TabsModule} from 'ngx-bootstrap';
+import { BsDropdownModule ,TabsModule, BsDatepickerModule} from 'ngx-bootstrap';
 
 import { RouterModule } from '@angular/router';
 import { appRoutes } from './routes';
@@ -53,7 +53,9 @@ export function tokenGetter() {
       BrowserModule,
       HttpClientModule,
       FormsModule,
+      ReactiveFormsModule,
       BsDropdownModule.forRoot(),
+      BsDatepickerModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
       JwtModule.forRoot({  //This library provides an HttpInterceptor which automatically attaches a JSON Web Token to HttpClient requests.
