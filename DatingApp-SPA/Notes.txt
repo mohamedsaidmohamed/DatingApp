@@ -35,4 +35,9 @@ npm install bootswatch@4.1.1
 
  * for file uploaders 
  https://valor-software.com/ng2-file-upload/
+
+
+ * time ago pipe for last active property
+ npm install time-ago-pipe --save
+ https://www.npmjs.com/package/time-ago-pipe
  
