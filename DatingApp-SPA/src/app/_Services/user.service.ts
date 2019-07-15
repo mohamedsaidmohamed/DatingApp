@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
 import { User } from '../_models/User';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParameterCodec, HttpParams } from '@angular/common/http';
+import { PaginationResult } from '../_models/Pagination';
+import { map } from 'rxjs/operators';
 
 //we will not send token in header hard coded , we use JWT Module : library that provides an HttpInterceptor which automatically attaches a JSON Web Token to HttpClient requests.
 // const HttpOptions = {
@@ -20,8 +22,32 @@ export class UserService {
 
 constructor(private http: HttpClient) { }
 
-getUsers(): Observable<User[]> {
-  return this.http.get<User[]>(this.baseUrl + 'users' /*, HttpOptions*/);
+getUsers(page? , itemsPerPage?,userParams?): Observable<PaginationResult<User[]>> 
+{
+  const paginationResult : PaginationResult<User[]> =new PaginationResult<User[]>();
+  let params = new HttpParams();
+  if(page != null && itemsPerPage != null){
+    params = params.append('pageNumber', page);
+    params = params.append('pageSize', itemsPerPage);
+  }
+
+  if(userParams != null) {
+    params = params.append('MinAge', userParams.minAge);
+    params = params.append('MaxAge', userParams.maxAge);
+    params = params.append('Gender', userParams.gender);
+    params = params.append('OrderBy', userParams.orderBy);
+  }
+
+  return this.http.get<User[]>(this.baseUrl + 'users' , {observe: 'response', params})
+  .pipe(
+      map( response => {
+        paginationResult.result = response.body;
+        if ( response.headers.get('Pagaination') != null){
+          paginationResult.pagination = JSON.parse(response.headers.get('Pagaination'));
+        }
+       return  paginationResult;
+      })
+  );
 }
 getUser(id): Observable<User> {
   return this.http.get<User>(this.baseUrl + 'users/' + id /*, HttpOptions*/);
