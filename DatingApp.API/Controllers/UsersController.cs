@@ -14,6 +14,9 @@ namespace DatingApp.API.Controllers
     [ServiceFilter(typeof(LogUserActivity))]
     [Authorize] 
     [Route("api/[controller]")]
+    //[Route("api/v{version:apiversion}/[controller]")]  
+    [ApiVersion("1.1")]
+    [ApiVersion("1.2")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -26,6 +29,7 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet]
+        [MapToApiVersion("1.1")]
         public async Task<IActionResult> GetUsers([FromQuery]UserParams UserParams)
         {
             var CurrentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -37,6 +41,28 @@ namespace DatingApp.API.Controllers
             {
                 UserParams.Gender=UserFromRepo.Gender=="male"?"female":"male";
             }
+
+            var users = await _repo.GetUsers(UserParams);
+
+            var UsersToReturn=_IMapper.Map<IEnumerable<UserForListDto>>(users);
+            Response.AddPagaination(users.CurrentPage,users.PageSize,users.TotalCount,users.TotalPages);
+
+            return Ok(UsersToReturn);
+        }
+
+        [HttpGet]
+        [MapToApiVersion("1.2")]
+        public async Task<IActionResult> GetUsersFemalesOnly([FromQuery]UserParams UserParams)
+        {
+            var CurrentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            UserParams.UserId = CurrentUserId ;
+
+            var UserFromRepo=await _repo.GetUser(CurrentUserId);
+
+            // if(string.IsNullOrEmpty(UserParams.Gender))
+            // {
+                UserParams.Gender="female";
+            //}
 
             var users = await _repo.GetUsers(UserParams);
 

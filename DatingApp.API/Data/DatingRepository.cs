@@ -53,6 +53,17 @@ namespace DatingApp.API.Data
             
             usersQuery = usersQuery.Where(x=>x.Id != userparams.UserId);
             usersQuery = usersQuery.Where(x=>x.Gender==userparams.Gender);
+
+            if(userparams.likers){
+                var userlikers=await GetUserLikes(userparams.UserId,userparams.likers);
+                usersQuery =usersQuery.Where(x=>userlikers.Contains(x.Id));
+            }
+
+            if(userparams.likes){
+                var userlikees=await GetUserLikes(userparams.UserId,userparams.likers);
+                usersQuery =usersQuery.Where(x=>userlikees.Contains(x.Id));
+            }
+
             if(userparams.MinAge !=18 || userparams.MaxAge !=99)
             {
                 var MinDOB = System.DateTime.Now.AddYears(-userparams.MaxAge - 1);
@@ -76,6 +87,23 @@ namespace DatingApp.API.Data
             }
             
             return await PagedList<User>.CreateAsync(usersQuery,userparams.PageSize,userparams.PageNumber);
+        }
+        public async Task<IEnumerable<int>> GetUserLikes(int id,bool likers){
+
+                var user= await _dbcontext.Users
+                                   .Include(x=>x.Likers)
+                                   .Include(x=>x.Likees)
+                                   .FirstOrDefaultAsync(x=>x.Id==id);
+
+
+                if(likers){
+                   return user.Likers.Where(x=>x.LikeeId==id).Select(x=>x.LikerId);
+
+                }else{
+
+                    return user.Likees.Where(x=>x.LikerId==id).Select(x=>x.LikeeId);
+                }
+
         }
 
         public async Task<bool> SaveAll()

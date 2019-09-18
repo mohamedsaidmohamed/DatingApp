@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.API.Helpers;
 using AutoMapper;
+using Microsoft.AspNetCore.Mvc.Versioning;
 
 namespace DatingApp.API
 {
@@ -38,6 +39,17 @@ namespace DatingApp.API
         {    
             services.AddDbContext<DataContext>(aa=>aa.UseSqlite("Data Source=DatingAppNew.db"));
           
+            services.AddApiVersioning(opt=>{
+                opt.AssumeDefaultVersionWhenUnspecified=true;
+                opt.DefaultApiVersion=new ApiVersion(1,1);
+                opt.ReportApiVersions=true; //report to response of header which api version used
+                //opt.ApiVersionReader=new UrlSegmentApiVersionReader(); // use above each controller [Route("api/v{version:apiversion}/[controller]")] 
+                opt.ApiVersionReader=new HeaderApiVersionReader("X-Version");
+                //opt.ApiVersionReader=new QueryStringApiVersionReader("Ver");
+                // opt.ApiVersionReader= ApiVersionReader.Combine(new HeaderApiVersionReader("X-version"),
+                // new QueryStringApiVersionReader("V","Version"));
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
             .AddJsonOptions(opt =>{
 
